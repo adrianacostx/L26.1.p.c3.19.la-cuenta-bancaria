@@ -15,10 +15,10 @@ export default class Cl_mCuenta {
     cantidadMovimientos() {
         return this.movimientos.length;
     }
-    saldoUltimoMovimiento() {
+    montoUltimoMovimiento() {
         if (this.movimientos.length === 0)
-            return this.saldoInicial;
-        return this.movimientos[this.movimientos.length - 1].saldoAcumulado;
+            return 0;
+        return this.movimientos[this.movimientos.length - 1].monto;
     }
     descripcionesConMontoMayorQueUltimo() {
         if (this.movimientos.length === 0)

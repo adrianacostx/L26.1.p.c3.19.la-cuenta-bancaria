@@ -33,7 +33,7 @@ export default class Cl_cCuenta {
         this.vCuenta.mostrarMovimientos({
             movimientos: this.mCuenta.movimientos,
             cntMovimientos: this.mCuenta.cantidadMovimientos(),
-            saldoUltimoMovimiento: this.mCuenta.saldoUltimoMovimiento(),
+            montoUltimoMovimiento: this.mCuenta.montoUltimoMovimiento(),
             descripcionesMayorQueUltimo: this.mCuenta.descripcionesConMontoMayorQueUltimo(),
         });
     }

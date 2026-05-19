@@ -5,7 +5,7 @@ const html = String.raw;
 
 export default class Cl_vCuenta implements I_vCuenta {
   lblCntMovimientos: HTMLLabelElement;
-  lblSaldoUltimoMovimiento: HTMLLabelElement;
+  lblMontoUltimoMovimiento: HTMLLabelElement;
   lblDescMayorQueUltimo: HTMLLabelElement;
   btNuevoMovimiento: HTMLButtonElement;
   tbMovimientos: HTMLTableElement;
@@ -15,7 +15,7 @@ export default class Cl_vCuenta implements I_vCuenta {
     this.vista = document.getElementById("body");
     this.btNuevoMovimiento = document.getElementById("body_btNuevoMovimiento") as HTMLButtonElement;
     this.lblCntMovimientos = document.getElementById("body_lblCntMovimientos") as HTMLLabelElement;
-    this.lblSaldoUltimoMovimiento = document.getElementById("body_lblSaldoUltimoMovimiento") as HTMLLabelElement;
+    this.lblMontoUltimoMovimiento = document.getElementById("body_lblMontoUltimoMovimiento") as HTMLLabelElement;
     this.lblDescMayorQueUltimo = document.getElementById("body_lblDescMayorQueUltimo") as HTMLLabelElement;
     this.tbMovimientos = document.getElementById("body_Movimientos") as HTMLTableElement;
   }
@@ -27,12 +27,12 @@ export default class Cl_vCuenta implements I_vCuenta {
   mostrarMovimientos({
     movimientos,
     cntMovimientos,
-    saldoUltimoMovimiento,
+    montoUltimoMovimiento,
     descripcionesMayorQueUltimo,
   }: {
     movimientos: Cl_mMovimiento[];
     cntMovimientos: number;
-    saldoUltimoMovimiento: number;
+    montoUltimoMovimiento: number;
     descripcionesMayorQueUltimo: string[];
   }): void {
     this.tbMovimientos.innerHTML = "";
@@ -47,9 +47,9 @@ export default class Cl_vCuenta implements I_vCuenta {
       this.tbMovimientos.appendChild(tr);
     });
     this.lblCntMovimientos.innerHTML = cntMovimientos.toString();
-    this.lblSaldoUltimoMovimiento.innerHTML = saldoUltimoMovimiento.toFixed(2);
+    this.lblMontoUltimoMovimiento.innerHTML = montoUltimoMovimiento.toFixed(2);
     this.lblDescMayorQueUltimo.innerHTML =
-      descripcionesMayorQueUltimo.length > 0 ? descripcionesMayorQueUltimo.join(", ") : "-";
+      descripcionesMayorQueUltimo.length > 0 ? descripcionesMayorQueUltimo.join(", ") : "ninguna";
   }
 
   mostrar(): void {

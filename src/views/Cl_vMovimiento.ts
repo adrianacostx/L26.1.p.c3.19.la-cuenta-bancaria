@@ -39,7 +39,6 @@ export default class Cl_vMovimiento implements I_vMovimiento {
 
   mostrar(): void {
     if (this.vista) this.vista.hidden = false;
-    // Limpiar campos opcionalmente
     this.inDescripcion.value = "";
     this.inTipo.value = "cargo";
     this.inMonto.value = "";

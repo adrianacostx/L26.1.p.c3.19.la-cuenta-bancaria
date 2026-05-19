@@ -5,12 +5,12 @@ export interface I_vCuenta {
   mostrarMovimientos({
     movimientos,
     cntMovimientos,
-    saldoUltimoMovimiento,
+    montoUltimoMovimiento,
     descripcionesMayorQueUltimo,
   }: {
     movimientos: Cl_mMovimiento[];
     cntMovimientos: number;
-    saldoUltimoMovimiento: number;
+    montoUltimoMovimiento: number;
     descripcionesMayorQueUltimo: string[];
   }): void;
   mostrar(): void;

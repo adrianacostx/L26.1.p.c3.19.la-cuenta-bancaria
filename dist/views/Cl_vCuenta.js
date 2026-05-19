@@ -1,7 +1,7 @@
 const html = String.raw;
 export default class Cl_vCuenta {
     lblCntMovimientos;
-    lblSaldoUltimoMovimiento;
+    lblMontoUltimoMovimiento;
     lblDescMayorQueUltimo;
     btNuevoMovimiento;
     tbMovimientos;
@@ -10,14 +10,14 @@ export default class Cl_vCuenta {
         this.vista = document.getElementById("body");
         this.btNuevoMovimiento = document.getElementById("body_btNuevoMovimiento");
         this.lblCntMovimientos = document.getElementById("body_lblCntMovimientos");
-        this.lblSaldoUltimoMovimiento = document.getElementById("body_lblSaldoUltimoMovimiento");
+        this.lblMontoUltimoMovimiento = document.getElementById("body_lblMontoUltimoMovimiento");
         this.lblDescMayorQueUltimo = document.getElementById("body_lblDescMayorQueUltimo");
         this.tbMovimientos = document.getElementById("body_Movimientos");
     }
     onNuevoMovimiento(callback) {
         this.btNuevoMovimiento.onclick = callback;
     }
-    mostrarMovimientos({ movimientos, cntMovimientos, saldoUltimoMovimiento, descripcionesMayorQueUltimo, }) {
+    mostrarMovimientos({ movimientos, cntMovimientos, montoUltimoMovimiento, descripcionesMayorQueUltimo, }) {
         this.tbMovimientos.innerHTML = "";
         movimientos.forEach(mov => {
             const tr = document.createElement("tr");
@@ -30,9 +30,9 @@ export default class Cl_vCuenta {
             this.tbMovimientos.appendChild(tr);
         });
         this.lblCntMovimientos.innerHTML = cntMovimientos.toString();
-        this.lblSaldoUltimoMovimiento.innerHTML = saldoUltimoMovimiento.toFixed(2);
+        this.lblMontoUltimoMovimiento.innerHTML = montoUltimoMovimiento.toFixed(2);
         this.lblDescMayorQueUltimo.innerHTML =
-            descripcionesMayorQueUltimo.length > 0 ? descripcionesMayorQueUltimo.join(", ") : "-";
+            descripcionesMayorQueUltimo.length > 0 ? descripcionesMayorQueUltimo.join(", ") : "ninguna";
     }
     mostrar() {
         if (this.vista)

@@ -21,9 +21,9 @@ export default class Cl_mCuenta {
     return this.movimientos.length;
   }
 
-  saldoUltimoMovimiento(): number {
-    if (this.movimientos.length === 0) return this.saldoInicial;
-    return this.movimientos[this.movimientos.length - 1].saldoAcumulado;
+  montoUltimoMovimiento(): number {
+    if (this.movimientos.length === 0) return 0;
+    return this.movimientos[this.movimientos.length - 1].monto;
   }
   descripcionesConMontoMayorQueUltimo(): string[] {
     if (this.movimientos.length === 0) return [];
