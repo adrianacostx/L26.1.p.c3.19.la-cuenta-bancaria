@@ -7,7 +7,7 @@ export interface I_vCuenta {
     saldoFinal: number;
     cantidadMovimientos: number;
     ultimoMovimiento: Cl_mMovimiento | null;
-    movimientosMontoSuperiorAlUltimo: { movimiento: Cl_mMovimiento; saldo: number }[];
+    movimientosMontoSuperiorAlUltimo: Cl_mMovimiento[];
   }): void;
   mostrar(): void;
   ocultar(): void;

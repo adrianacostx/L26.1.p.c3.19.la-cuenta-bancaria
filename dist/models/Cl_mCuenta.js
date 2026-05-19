@@ -43,9 +43,14 @@ export default class Cl_mCuentaBancaria {
         if (!ultimoMovimiento) {
             return [];
         }
-        const movsConSaldo = this.obtenerMovimientosConSaldo();
         const montoUltimo = ultimoMovimiento.monto;
-        return movsConSaldo.filter((item) => item.movimiento.monto > montoUltimo);
+        const resultado = [];
+        this.movimientos.forEach((mov) => {
+            if (mov.monto > montoUltimo) {
+                resultado.push(mov);
+            }
+        });
+        return resultado;
     }
 }
 //# sourceMappingURL=Cl_mCuenta.js.map

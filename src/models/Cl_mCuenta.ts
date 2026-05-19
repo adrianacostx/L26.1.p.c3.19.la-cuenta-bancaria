@@ -47,14 +47,18 @@ export default class Cl_mCuentaBancaria {
     return this.movimientos[this.movimientos.length - 1];
   }
 
-  movimientosMontoSuperiorAlUltimo(): { movimiento: Cl_mMovimiento; saldo: number }[] {
+  movimientosMontoSuperiorAlUltimo(): Cl_mMovimiento[] {
     const ultimoMovimiento = this.ultimoMovimiento();
     if (!ultimoMovimiento) {
       return [];
     }
-
-    const movsConSaldo = this.obtenerMovimientosConSaldo();
     const montoUltimo = ultimoMovimiento.monto;
-    return movsConSaldo.filter((item) => item.movimiento.monto > montoUltimo);
+    const resultado: Cl_mMovimiento[] = [];
+    this.movimientos.forEach((mov) => {
+      if (mov.monto > montoUltimo) {
+        resultado.push(mov);
+      }
+    });
+    return resultado;
   }
 }

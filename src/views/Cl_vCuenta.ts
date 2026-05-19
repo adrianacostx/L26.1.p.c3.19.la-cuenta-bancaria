@@ -29,7 +29,7 @@ export default class Cl_vCuenta implements I_vCuenta {
     saldoFinal: number;
     cantidadMovimientos: number;
     ultimoMovimiento: Cl_mMovimiento | null;
-    movimientosMontoSuperiorAlUltimo: { movimiento: Cl_mMovimiento; saldo: number }[];
+    movimientosMontoSuperiorAlUltimo: Cl_mMovimiento[];
   }): void {
 
     this.divMovimientos.innerHTML = "";
@@ -55,7 +55,7 @@ export default class Cl_vCuenta implements I_vCuenta {
     } else {
       data.movimientosMontoSuperiorAlUltimo.forEach(item => {
         const linea = document.createElement("div");
-        linea.textContent = `${item.movimiento.tipo} por ${item.movimiento.descripcion}, monto $${item.movimiento.monto}`;
+        linea.textContent = `${item.tipo} por ${item.descripcion}, monto $${item.monto}`;
         this.divMovimientosSuperior.appendChild(linea);
       });
     }

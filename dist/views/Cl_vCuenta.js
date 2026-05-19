@@ -40,7 +40,7 @@ export default class Cl_vCuenta {
         else {
             data.movimientosMontoSuperiorAlUltimo.forEach(item => {
                 const linea = document.createElement("div");
-                linea.textContent = `${item.movimiento.tipo} por ${item.movimiento.descripcion}, monto $${item.movimiento.monto}`;
+                linea.textContent = `${item.tipo} por ${item.descripcion}, monto $${item.monto}`;
                 this.divMovimientosSuperior.appendChild(linea);
             });
         }
