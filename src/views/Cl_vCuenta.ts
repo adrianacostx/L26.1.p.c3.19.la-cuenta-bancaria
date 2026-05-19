@@ -1,69 +1,61 @@
 import { I_vCuenta } from "../interfaces/I_vCuenta.js";
 import Cl_mMovimiento from "../models/Cl_mMovimiento.js";
 
+const html = String.raw;
+
 export default class Cl_vCuenta implements I_vCuenta {
-  lblSaldoFinal: HTMLLabelElement;
-  lblCantidadMovimientos: HTMLLabelElement;
-  lblUltimoMovimiento: HTMLLabelElement;
+  lblCntMovimientos: HTMLLabelElement;
+  lblSaldoUltimoMovimiento: HTMLLabelElement;
+  lblDescMayorQueUltimo: HTMLLabelElement;
   btNuevoMovimiento: HTMLButtonElement;
-  divMovimientos: HTMLDivElement;
-  divMovimientosSuperior: HTMLDivElement;
+  tbMovimientos: HTMLTableElement;
   vista: HTMLElement | null;
 
   constructor() {
     this.vista = document.getElementById("body");
     this.btNuevoMovimiento = document.getElementById("body_btNuevoMovimiento") as HTMLButtonElement;
-    this.lblSaldoFinal = document.getElementById("body_lblSaldoFinal") as HTMLLabelElement;
-    this.lblCantidadMovimientos = document.getElementById("body_lblCantidadMovimientos") as HTMLLabelElement;
-    this.lblUltimoMovimiento = document.getElementById("body_lblUltimoMovimiento") as HTMLLabelElement;
-    this.divMovimientos = document.getElementById("body_movimientosLista") as HTMLDivElement;
-    this.divMovimientosSuperior = document.getElementById("body_movimientosSuperiorLista") as HTMLDivElement;
+    this.lblCntMovimientos = document.getElementById("body_lblCntMovimientos") as HTMLLabelElement;
+    this.lblSaldoUltimoMovimiento = document.getElementById("body_lblSaldoUltimoMovimiento") as HTMLLabelElement;
+    this.lblDescMayorQueUltimo = document.getElementById("body_lblDescMayorQueUltimo") as HTMLLabelElement;
+    this.tbMovimientos = document.getElementById("body_Movimientos") as HTMLTableElement;
   }
 
   onNuevoMovimiento(callback: () => void): void {
     this.btNuevoMovimiento.onclick = callback;
   }
 
-  mostrarMovimientos(data: {
-    movimientosConSaldo: { movimiento: Cl_mMovimiento; saldo: number }[];
-    saldoFinal: number;
-    cantidadMovimientos: number;
-    ultimoMovimiento: Cl_mMovimiento | null;
-    movimientosMontoSuperiorAlUltimo: Cl_mMovimiento[];
+  mostrarMovimientos({
+    movimientos,
+    cntMovimientos,
+    saldoUltimoMovimiento,
+    descripcionesMayorQueUltimo,
+  }: {
+    movimientos: Cl_mMovimiento[];
+    cntMovimientos: number;
+    saldoUltimoMovimiento: number;
+    descripcionesMayorQueUltimo: string[];
   }): void {
-
-    this.divMovimientos.innerHTML = "";
-    this.divMovimientosSuperior.innerHTML = "";
-
-    data.movimientosConSaldo.forEach(item => {
-      const mov = item.movimiento;
-      const linea = document.createElement("div");
-      linea.textContent = `${mov.tipo} por ${mov.descripcion}, saldo $${item.saldo}`;
-      this.divMovimientos.appendChild(linea);
+    this.tbMovimientos.innerHTML = "";
+    movimientos.forEach(mov => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = html`
+        <td>${mov.descripcion}</td>
+        <td>${mov.tipo === "cargo" ? "Cargo" : "Abono"}</td>
+        <td>${mov.monto.toFixed(2)}</td>
+        <td>${mov.saldoAcumulado.toFixed(2)}</td>
+      `;
+      this.tbMovimientos.appendChild(tr);
     });
-
-    this.lblSaldoFinal.innerHTML = data.saldoFinal.toString();
-    this.lblCantidadMovimientos.innerHTML = data.cantidadMovimientos.toString();
-    this.lblUltimoMovimiento.innerHTML = data.ultimoMovimiento
-      ? `${data.ultimoMovimiento.tipo} por ${data.ultimoMovimiento.descripcion} $${data.ultimoMovimiento.monto}`
-      : "ninguno";
-
-    if (data.movimientosMontoSuperiorAlUltimo.length === 0) {
-      const mensaje = document.createElement("div");
-      mensaje.textContent = "No hay movimientos con monto superior al último.";
-      this.divMovimientosSuperior.appendChild(mensaje);
-    } else {
-      data.movimientosMontoSuperiorAlUltimo.forEach(item => {
-        const linea = document.createElement("div");
-        linea.textContent = `${item.tipo} por ${item.descripcion}, monto $${item.monto}`;
-        this.divMovimientosSuperior.appendChild(linea);
-      });
-    }
+    this.lblCntMovimientos.innerHTML = cntMovimientos.toString();
+    this.lblSaldoUltimoMovimiento.innerHTML = saldoUltimoMovimiento.toFixed(2);
+    this.lblDescMayorQueUltimo.innerHTML =
+      descripcionesMayorQueUltimo.length > 0 ? descripcionesMayorQueUltimo.join(", ") : "-";
   }
 
   mostrar(): void {
     if (this.vista) this.vista.hidden = false;
   }
+
   ocultar(): void {
     if (this.vista) this.vista.hidden = true;
   }

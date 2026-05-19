@@ -1,56 +1,36 @@
-export default class Cl_mCuentaBancaria {
+export default class Cl_mCuenta {
     saldoInicial;
     movimientos = [];
-    constructor(saldoInicial) {
+    constructor(saldoInicial = 50) {
         this.saldoInicial = saldoInicial;
     }
-    agregarMovimiento(mov) {
-        this.movimientos.push(mov);
-    }
-    obtenerMovimientosConSaldo() {
-        let saldoActual = this.saldoInicial;
-        const resultado = [];
-        for (let i = 0; i < this.movimientos.length; i++) {
-            const mov = this.movimientos[i];
-            if (mov.tipo === "Cargo") {
-                saldoActual -= mov.monto;
-            }
-            else {
-                saldoActual += mov.monto;
-            }
-            resultado.push({ movimiento: mov, saldo: saldoActual });
-        }
-        return resultado;
-    }
-    saldoFinal() {
-        const movsConSaldo = this.obtenerMovimientosConSaldo();
-        if (movsConSaldo.length === 0) {
-            return this.saldoInicial;
-        }
-        return movsConSaldo[movsConSaldo.length - 1].saldo;
+    agregarMovimiento(movimiento) {
+        const saldoAnterior = this.movimientos.length === 0
+            ? this.saldoInicial
+            : this.movimientos[this.movimientos.length - 1].saldoAcumulado;
+        const nuevoSaldo = movimiento.calcularNuevoSaldo(saldoAnterior);
+        movimiento.saldoAcumulado = nuevoSaldo;
+        this.movimientos.push(movimiento);
     }
     cantidadMovimientos() {
         return this.movimientos.length;
     }
-    ultimoMovimiento() {
-        if (this.movimientos.length === 0) {
-            return null;
-        }
-        return this.movimientos[this.movimientos.length - 1];
+    saldoUltimoMovimiento() {
+        if (this.movimientos.length === 0)
+            return this.saldoInicial;
+        return this.movimientos[this.movimientos.length - 1].saldoAcumulado;
     }
-    movimientosMontoSuperiorAlUltimo() {
-        const ultimoMovimiento = this.ultimoMovimiento();
-        if (!ultimoMovimiento) {
+    descripcionesConMontoMayorQueUltimo() {
+        if (this.movimientos.length === 0)
             return [];
-        }
-        const montoUltimo = ultimoMovimiento.monto;
-        const resultado = [];
-        this.movimientos.forEach((mov) => {
-            if (mov.monto > montoUltimo) {
-                resultado.push(mov);
+        const ultimoMonto = this.movimientos[this.movimientos.length - 1].monto;
+        const descripciones = [];
+        for (let i = 0; i < this.movimientos.length - 1; i++) {
+            if (this.movimientos[i].monto > ultimoMonto) {
+                descripciones.push(this.movimientos[i].descripcion);
             }
-        });
-        return resultado;
+        }
+        return descripciones;
     }
 }
 //# sourceMappingURL=Cl_mCuenta.js.map

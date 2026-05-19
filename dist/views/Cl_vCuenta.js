@@ -1,49 +1,38 @@
+const html = String.raw;
 export default class Cl_vCuenta {
-    lblSaldoFinal;
-    lblCantidadMovimientos;
-    lblUltimoMovimiento;
+    lblCntMovimientos;
+    lblSaldoUltimoMovimiento;
+    lblDescMayorQueUltimo;
     btNuevoMovimiento;
-    divMovimientos;
-    divMovimientosSuperior;
+    tbMovimientos;
     vista;
     constructor() {
         this.vista = document.getElementById("body");
         this.btNuevoMovimiento = document.getElementById("body_btNuevoMovimiento");
-        this.lblSaldoFinal = document.getElementById("body_lblSaldoFinal");
-        this.lblCantidadMovimientos = document.getElementById("body_lblCantidadMovimientos");
-        this.lblUltimoMovimiento = document.getElementById("body_lblUltimoMovimiento");
-        this.divMovimientos = document.getElementById("body_movimientosLista");
-        this.divMovimientosSuperior = document.getElementById("body_movimientosSuperiorLista");
+        this.lblCntMovimientos = document.getElementById("body_lblCntMovimientos");
+        this.lblSaldoUltimoMovimiento = document.getElementById("body_lblSaldoUltimoMovimiento");
+        this.lblDescMayorQueUltimo = document.getElementById("body_lblDescMayorQueUltimo");
+        this.tbMovimientos = document.getElementById("body_Movimientos");
     }
     onNuevoMovimiento(callback) {
         this.btNuevoMovimiento.onclick = callback;
     }
-    mostrarMovimientos(data) {
-        this.divMovimientos.innerHTML = "";
-        this.divMovimientosSuperior.innerHTML = "";
-        data.movimientosConSaldo.forEach(item => {
-            const mov = item.movimiento;
-            const linea = document.createElement("div");
-            linea.textContent = `${mov.tipo} por ${mov.descripcion}, saldo $${item.saldo}`;
-            this.divMovimientos.appendChild(linea);
+    mostrarMovimientos({ movimientos, cntMovimientos, saldoUltimoMovimiento, descripcionesMayorQueUltimo, }) {
+        this.tbMovimientos.innerHTML = "";
+        movimientos.forEach(mov => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = html `
+        <td>${mov.descripcion}</td>
+        <td>${mov.tipo === "cargo" ? "Cargo" : "Abono"}</td>
+        <td>${mov.monto.toFixed(2)}</td>
+        <td>${mov.saldoAcumulado.toFixed(2)}</td>
+      `;
+            this.tbMovimientos.appendChild(tr);
         });
-        this.lblSaldoFinal.innerHTML = data.saldoFinal.toString();
-        this.lblCantidadMovimientos.innerHTML = data.cantidadMovimientos.toString();
-        this.lblUltimoMovimiento.innerHTML = data.ultimoMovimiento
-            ? `${data.ultimoMovimiento.tipo} por ${data.ultimoMovimiento.descripcion} $${data.ultimoMovimiento.monto}`
-            : "ninguno";
-        if (data.movimientosMontoSuperiorAlUltimo.length === 0) {
-            const mensaje = document.createElement("div");
-            mensaje.textContent = "No hay movimientos con monto superior al último.";
-            this.divMovimientosSuperior.appendChild(mensaje);
-        }
-        else {
-            data.movimientosMontoSuperiorAlUltimo.forEach(item => {
-                const linea = document.createElement("div");
-                linea.textContent = `${item.tipo} por ${item.descripcion}, monto $${item.monto}`;
-                this.divMovimientosSuperior.appendChild(linea);
-            });
-        }
+        this.lblCntMovimientos.innerHTML = cntMovimientos.toString();
+        this.lblSaldoUltimoMovimiento.innerHTML = saldoUltimoMovimiento.toFixed(2);
+        this.lblDescMayorQueUltimo.innerHTML =
+            descripcionesMayorQueUltimo.length > 0 ? descripcionesMayorQueUltimo.join(", ") : "-";
     }
     mostrar() {
         if (this.vista)

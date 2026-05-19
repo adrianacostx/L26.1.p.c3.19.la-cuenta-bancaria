@@ -12,39 +12,32 @@ Abono por transferencia, saldo $57
 Cargo por deuda, saldo $32
 El saldo final de la cuenta es de $32
  */
-import Cl_mCuentaBancaria from "../models/Cl_mCuenta.js";
+import Cl_mCuenta from "../models/Cl_mCuenta.js";
 import Cl_mMovimiento from "../models/Cl_mMovimiento.js";
 export default class Cl_cCuenta {
-    mCuenta;
+    mCuenta = new Cl_mCuenta(50);
     vCuenta;
     cMovimiento;
     constructor(vistaCuenta, controladorMovimiento) {
-        this.mCuenta = new Cl_mCuentaBancaria(50); // Saldo inicial $50
         this.vCuenta = vistaCuenta;
         this.cMovimiento = controladorMovimiento;
-        this.vCuenta.onNuevoMovimiento(() => this.procesar1Movimiento());
-        this.agregarDatosIniciales();
+        // Movimientos iniciales
+        this.mCuenta.agregarMovimiento(new Cl_mMovimiento({ descripcion: "desayuno", tipo: "cargo", monto: 5 }));
+        this.mCuenta.agregarMovimiento(new Cl_mMovimiento({ descripcion: "taxi", tipo: "cargo", monto: 8 }));
+        this.mCuenta.agregarMovimiento(new Cl_mMovimiento({ descripcion: "transferencia", tipo: "abono", monto: 20 }));
+        this.mCuenta.agregarMovimiento(new Cl_mMovimiento({ descripcion: "deuda", tipo: "cargo", monto: 25 }));
         this.actualizarVista();
-    }
-    agregarDatosIniciales() {
-        const movimientosIniciales = [
-            new Cl_mMovimiento({ descripcion: "desayuno", tipo: "Cargo", monto: 5 }),
-            new Cl_mMovimiento({ descripcion: "taxi", tipo: "Cargo", monto: 8 }),
-            new Cl_mMovimiento({ descripcion: "transferencia", tipo: "Abono", monto: 20 }),
-            new Cl_mMovimiento({ descripcion: "deuda", tipo: "Cargo", monto: 25 }),
-        ];
-        movimientosIniciales.forEach(mov => this.mCuenta.agregarMovimiento(mov));
+        this.vCuenta.onNuevoMovimiento(() => this.procesarNuevoMovimiento());
     }
     actualizarVista() {
         this.vCuenta.mostrarMovimientos({
-            movimientosConSaldo: this.mCuenta.obtenerMovimientosConSaldo(),
-            saldoFinal: this.mCuenta.saldoFinal(),
-            cantidadMovimientos: this.mCuenta.cantidadMovimientos(),
-            ultimoMovimiento: this.mCuenta.ultimoMovimiento(),
-            movimientosMontoSuperiorAlUltimo: this.mCuenta.movimientosMontoSuperiorAlUltimo()
+            movimientos: this.mCuenta.movimientos,
+            cntMovimientos: this.mCuenta.cantidadMovimientos(),
+            saldoUltimoMovimiento: this.mCuenta.saldoUltimoMovimiento(),
+            descripcionesMayorQueUltimo: this.mCuenta.descripcionesConMontoMayorQueUltimo(),
         });
     }
-    procesar1Movimiento() {
+    procesarNuevoMovimiento() {
         this.cMovimiento.solicitarMovimiento((movimiento) => {
             if (movimiento !== null) {
                 this.mCuenta.agregarMovimiento(movimiento);

@@ -1,46 +1,62 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cuenta Bancaria</title>
 </head>
+
 <body>
+
   <section id="body">
     <h2>Cuenta Bancaria</h2>
-    <button id="body_btNuevoMovimiento">Nuevo movimiento</button>
+    <button id="body_btNuevoMovimiento">Nuevo Movimiento</button>
     <hr>
-    <div id="body_movimientosLista"></div>
+    <table border="1" style="border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th>Descripción</th>
+          <th>Tipo</th>
+          <th>Monto ($)</th>
+          <th>Saldo Acumulado ($)</th>
+        </tr>
+      </thead>
+      <tbody id="body_Movimientos"></tbody>
+    </table>
     <hr>
-    <div>Saldo final de la cuenta: $<span id="body_lblSaldoFinal">0</span></div>
-    <hr>
-    <div>Cantidad de movimientos procesados: <span id="body_lblCantidadMovimientos">0</span></div>
-    <div>Último movimiento: <span id="body_lblUltimoMovimiento">ninguno</span></div>
-    <div>Movimientos con monto superior al último:<br><div id="body_movimientosSuperiorLista"></div></div>
-    <div>Procesos usados: <span id="body_lblProcesosUsados">forEach, length, push</span></div>
+    <div>
+      Cantidad de movimientos procesados: <span id="body_lblCntMovimientos">0</span>
+    </div>
+    <div>
+      Saldo del último movimiento: <span id="body_lblSaldoUltimoMovimiento">0.00</span>
+    </div>
+    <div>
+      Descripciones con monto mayor que el último movimiento: <span id="body_lblDescMayorQueUltimo">-</span>
+    </div>
+    <div>Procesos utlizados: forEach, length, push</div>
   </section>
 
-  <section id="movimiento" hidden style="margin-top:20px; border:1px solid #ccc; padding:15px; width:300px;">
+  <section id="movimiento" hidden style="margin-top: 20px; border: 1px solid #ccc; padding: 15px; width: 300px;">
     <h5>Registrar Movimiento</h5>
-    <div><label>Descripción: 
-      <select id="movimiento_inDescripcion">
-        <option value="desayuno">desayuno</option>
-        <option value="taxi">taxi</option>
-        <option value="transferencia">transferencia</option>
-        <option value="deuda">deuda</option>
-        <option value="sueldo">sueldo</option>
-        <option value="venta">venta</option>
-        <option value="compra">compra</option>
-        <option value="viaje">viaje</option>
-      </select>
-    </label></div>
-    <div><label>Tipo:
-      <select id="movimiento_inTipo">
-        <option value="Cargo">Cargo</option>
-        <option value="Abono">Abono</option>
-      </select>
-    </label></div>
-    <div><label>Monto: <input type="number" id="movimiento_inMonto" placeholder="Monto positivo"></label></div>
+    <div>
+      <label>Descripción:
+        <input type="text" id="movimiento_inDescripcion" placeholder="Ej: Desayuno">
+      </label>
+    </div>
+    <div>
+      <label>Tipo:
+        <select id="movimiento_inTipo">
+          <option value="cargo">Cargo (gasto)</option>
+          <option value="abono">Abono (ingreso)</option>
+        </select>
+      </label>
+    </div>
+    <div>
+      <label>Monto ($):
+        <input type="number" id="movimiento_inMonto" placeholder="0.00">
+      </label>
+    </div>
     <br>
     <button id="movimiento_btCancelar">Cancelar</button>
     <button id="movimiento_btAceptar">Aceptar</button>
@@ -54,8 +70,10 @@
 
     const vistaCuenta = new Cl_vCuenta();
     const vistaMovimiento = new Cl_vMovimiento();
+
     const controladorMovimiento = new Cl_cMovimiento(vistaMovimiento);
     new Cl_cCuenta(vistaCuenta, controladorMovimiento);
   </script>
 </body>
+
 </html>

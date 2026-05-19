@@ -1,10 +1,10 @@
 export default class Cl_vMovimiento {
+    vista;
     inDescripcion;
     inTipo;
     inMonto;
     btCancelar;
     btAceptar;
-    vista;
     constructor() {
         this.vista = document.getElementById("movimiento");
         this.inDescripcion = document.getElementById("movimiento_inDescripcion");
@@ -13,6 +13,12 @@ export default class Cl_vMovimiento {
         this.btCancelar = document.getElementById("movimiento_btCancelar");
         this.btAceptar = document.getElementById("movimiento_btAceptar");
     }
+    onCancelar(callback) {
+        this.btCancelar.onclick = callback;
+    }
+    onAceptar(callback) {
+        this.btAceptar.onclick = callback;
+    }
     get descripcion() {
         return this.inDescripcion.value.trim();
     }
@@ -20,17 +26,15 @@ export default class Cl_vMovimiento {
         return this.inTipo.value;
     }
     get monto() {
-        return parseFloat(this.inMonto.value.trim());
-    }
-    onAceptar(callback) {
-        this.btAceptar.onclick = callback;
-    }
-    onCancelar(callback) {
-        this.btCancelar.onclick = callback;
+        return parseFloat(this.inMonto.value) || 0;
     }
     mostrar() {
         if (this.vista)
             this.vista.hidden = false;
+        // Limpiar campos opcionalmente
+        this.inDescripcion.value = "";
+        this.inTipo.value = "cargo";
+        this.inMonto.value = "";
     }
     ocultar() {
         if (this.vista)
